@@ -1,12 +1,11 @@
-
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
 #include <stdlib.h>
 
-int Get_Binary(int sparsity){
-	int r;
-	return ((int)pow((r % 7), sparsity)) % 2;
+int Get_Binary(float sparsity){
+	int r = rand();
+	return ((int)pow(r, sparsity)) % 2;
 }
 
 void Get_Number_Nodes(int *num_nodes){
@@ -14,54 +13,53 @@ void Get_Number_Nodes(int *num_nodes){
 	scanf("%d", &(*num_nodes));
 }
 
-void Fill_Matrix(int *graph, int num_nodes, int sparsity){
+int* Fill_Matrix(int num_nodes, float sparsity){
 	int i, j;
+	int *arr = malloc(num_nodes * num_nodes * sizeof(int));
 	for(i = 0; i < num_nodes; i++){
 		for(j = 0; j < num_nodes; j++){
-			*(graph + (i * num_nodes) + j) = 8;//Get_Binary(sparsity);
+			arr[(i * num_nodes) + j] = Get_Binary(sparsity);
 		}
 	}
+	return arr;
 }
 
-void Show_Matrix(int *graph, int num_nodes);
-
-void Create_Matrix(int *graph, int num_nodes, int sparsity){
-	graph = (int*)malloc(num_nodes * num_nodes * sizeof(int));
-	if(graph == NULL) printf("fufufufuf\n");
-	Show_Matrix(&(*graph), num_nodes);
-	Fill_Matrix(&(*graph), num_nodes, sparsity);
+int* Create_Matrix(int num_nodes){
+    return malloc(num_nodes * num_nodes * sizeof(int));
 }
 
 void Show_Matrix(int *graph, int num_nodes){
 	int i, j;
 	for(i = 0; i < num_nodes; i++){
-                for(j = 0; j < num_nodes; j++){
-			printf("%d\n", *(graph + (i * num_nodes) + j));
-                }
+        for(j = 0; j < num_nodes; j++){
+			printf("%d ", graph[(i * num_nodes) + j]);
         }
+        printf("\n");
+    }
 }
 
-void Get_Sparsity(int *sparsity){
+void Get_Sparsity(float *sparsity){
 	char confirmation;
 	printf("Voce deseja uma matriz esparsa? (s/n)\n");
 	scanf(" %c", &confirmation);
 	if(confirmation == 's' || confirmation == 'S'){ //Uses linked list
-		*sparsity = 2;
+		*sparsity = 0.8;
 	} else if(confirmation == 'n' || confirmation == 'N'){ //Uses 2d array
-			*sparsity = 1;
+			*sparsity = 0.1;
 		} else Get_Sparsity(&(*sparsity));
 }
 
 int main() {
 	int num_nodes;
-	int sparsity;
-	int *graph;
+	float sparsity;
+	int *graph = NULL;
 	Get_Number_Nodes(&num_nodes);
 	Get_Sparsity(&sparsity);
-	Create_Matrix(&(*graph), num_nodes, sparsity);
+	graph = Create_Matrix(num_nodes);
+    graph = Fill_Matrix(num_nodes, sparsity);
 //	Create_Structure(sparsity);
 	srand((unsigned int)time(NULL));
-	printf("%d %d\n", num_nodes, sparsity);
-	Show_Matrix(&(*graph), num_nodes);
+	printf("%d %f\n", num_nodes, sparsity);
+	Show_Matrix(graph, num_nodes);
 	return 0;
 }
