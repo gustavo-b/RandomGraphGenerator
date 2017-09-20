@@ -62,6 +62,7 @@ void Get_Sparsity(float *sparsity){
 }
 
 int main() {
+    srand((unsigned int)time(NULL));
 	int num_nodes;
 	float sparsity;
 	int *graph = NULL;
@@ -70,7 +71,6 @@ int main() {
 	graph = Create_Matrix(num_nodes);
     graph = Fill_Matrix(num_nodes, sparsity);
 //	Create_Structure(sparsity);
-	srand((unsigned int)time(NULL));
 	printf("%d %f\n", num_nodes, sparsity);
 	Show_Matrix(graph, num_nodes);
 	return 0;
