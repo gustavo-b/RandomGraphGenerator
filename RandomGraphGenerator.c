@@ -3,38 +3,29 @@
 #include <time.h>
 #include <stdlib.h>
 
-int Get_Random_Even() {
-    return 2 * rand();
-}
-
-int Get_Random_Odd() {
-    return 2 * rand() + 1;
-}
-
 int Get_Binary(float sparsity){
 	int r = rand();
 	if(r < RAND_MAX * sparsity) {
-        return Get_Random_Odd() % 2;
+        return 1;
 	} else {
-        return Get_Random_Even() % 2;
+        return 0;
 	}
+}
+
+typedef struct {
+	int pass;
+	struct elem *next;
+}node;
+
+void Create_List (node **list) {
+	*list = malloc (sizeof(node));
+	(*list)->next = NULL;
 }
 
 void Get_Number_Nodes(int *num_nodes){
 	printf("Voce deseja um grafo de quantos nos?\n");
 	scanf("%d", &(*num_nodes));
 }
-
-//int* Fill_Matrix(int num_nodes, float sparsity){
-//	int i, j;
-//	int *arr = malloc(num_nodes * num_nodes * sizeof(int));
-//	for(i = 0; i < num_nodes; i++){
-//		for(j = 0; j < num_nodes; j++){
-//			arr[(i * num_nodes) + j] = Get_Binary(sparsity);
-//		}
-//	}
-//	return arr;
-//}
 
 void Fill_Matrix(int **graph, int num_nodes, float sparsity){
 	int i, j;
@@ -80,9 +71,9 @@ int main() {
 	int *graph = NULL;
 	Get_Number_Nodes(&num_nodes);
 	Get_Sparsity(&sparsity);
+//	Create_Structure(sparsity);
 	Create_Matrix(&graph, num_nodes);
     Fill_Matrix(&graph, num_nodes, sparsity);
-//	Create_Structure(sparsity);
 	printf("%d %f\n", num_nodes, sparsity);
 	Show_Matrix(graph, num_nodes);
 	return 0;
