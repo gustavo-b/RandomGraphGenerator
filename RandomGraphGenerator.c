@@ -3,9 +3,21 @@
 #include <time.h>
 #include <stdlib.h>
 
+int Get_Random_Even() {
+    return 2 * rand();
+}
+
+int Get_Random_Odd() {
+    return 2 * rand() + 1;
+}
+
 int Get_Binary(float sparsity){
 	int r = rand();
-	return ((int)pow(r, sparsity)) % 2;
+	if(r < RAND_MAX * sparsity) {
+        return Get_Random_Odd() % 2;
+	} else {
+        return Get_Random_Even() % 2;
+	}
 }
 
 void Get_Number_Nodes(int *num_nodes){
@@ -43,9 +55,9 @@ void Get_Sparsity(float *sparsity){
 	printf("Voce deseja uma matriz esparsa? (s/n)\n");
 	scanf(" %c", &confirmation);
 	if(confirmation == 's' || confirmation == 'S'){ //Uses linked list
-		*sparsity = 0.8;
+		*sparsity = 0.3;
 	} else if(confirmation == 'n' || confirmation == 'N'){ //Uses 2d array
-			*sparsity = 0.1;
+			*sparsity = 0.8;
 		} else Get_Sparsity(&(*sparsity));
 }
 
